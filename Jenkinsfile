@@ -2,14 +2,14 @@ pipeline {
     agent none
     stages {
         stage('Check yaml syntax') {
-            agent { docker { image 'sdesbure/yamllint' } }
+            agent { any { image 'sdesbure/yamllint' } }
             steps {
                 sh 'yamllint --version'
                 sh 'yamllint \${WORKSPACE}'
             }
         }
         stage('Check markdown syntax') {
-            agent { docker { image 'ruby:alpine' } }
+            agent { any { image 'ruby:alpine' } }
             steps {
                 sh 'apk --no-cache add git'
                 sh 'gem install mdl'
@@ -30,7 +30,7 @@ pipeline {
             environment {
                 SUDOPASS = credentials('sudopass')
             }
-            agent { docker { image 'registry.gitlab.com/robconnolly/docker-ansible:latest' } }
+            agent { any { image 'registry.gitlab.com/robconnolly/docker-ansible:latest' } }
             stages {
                stage("Verify ansible playbook syntax") {
                    steps {
